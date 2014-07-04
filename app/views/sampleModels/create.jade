@@ -1,0 +1,26 @@
+extends ../shared/template
+
+block content
+
+  .row
+    .small-2.columns
+      &nbsp;
+    .small-8.columns
+      if err
+        .row
+          .small-12.columns
+              p #{err}
+    .small-2.columns
+
+  .row
+    .small-12.columns
+      .row
+        .small-12.columns
+          form(action='/sampleModels/create', method='post', enctype='multipart/form-data')
+            fieldset
+              legend Add a Sample Model
+                label Type Whatever
+                input(name='whatever', type='text', value='a bunch of stuff')
+                button Add the Sample Model
+
+

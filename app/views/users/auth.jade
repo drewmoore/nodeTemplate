@@ -1,0 +1,52 @@
+extends ../shared/template
+block content
+  .row
+    .small-2.columns
+      &nbsp;
+    .small-8.columns
+      if err
+        .row
+          .small-12.columns.error
+            p #{err};
+    .small-2.columns
+      &nbsp;
+
+  .row
+    .small-6.columns
+      form(action='/login', method='post')
+        fieldset
+          legend Sign-In
+          .row
+            .small-12.columns
+              label Email
+              input(name='email', type='text')
+          .row
+            .small-12.columns
+              label Password
+              input(name='password', type='password')
+          .row
+            .small-12.columns
+              button Login
+
+    .small-6.columns
+      form(action='/register', method='post')
+        fieldset
+          legend Sign-Up
+          .row
+            .small-12.columns
+              label Email
+              input(name='email', type='text')
+            .row
+              .small-12.columns
+                label Whatever
+                input(name='whatever', type='text')
+            .row
+              .small-12.columns
+                label Password
+                input(name='password', type='password')
+            .row
+              .small-12.columns
+                button Register
+
+
+
