@@ -47,6 +47,22 @@ describe('SampleModel', function(){
       });
     });
   });
+  describe('addImage', function(){
+    it('should add an image', function(done){
+      var u1 = new User({email:'test@nomail.com', name:'Test', password:'1234'});
+      u1.register(function(err, body){
+        var s1 = new SampleModel({whatever: 'stuff', userId:u1._id});
+        s1.insert(function(err, records){
+          var oldname = __dirname + '/../fixtures/test-copy.jpg';
+          s1.addImage(oldname, function(){
+            var sampleModelId = s1._id.toString();
+            expect(s1.image).to.equal('/img/sampleModels/' + sampleModelId + '.jpg');
+            done();
+          });
+        });
+      });
+    });
+  });
   describe('findById', function(){
     it('should find a SampleModel by its Id', function(done){
       var s1 = new SampleModel({whatever: 'stuff'});

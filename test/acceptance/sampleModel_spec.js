@@ -33,10 +33,11 @@ describe('sampleModel', function(){
           var sampleModel = {
             whatever: 'whatever'
           };
+          var imageFile = __dirname + '/../fixtures/test-copy.jpg';
           request(app)
           .post('/sampleModel/create')
           .set('cookie', cookie)
-          .send({sampleModel:sampleModel})
+          .send({sampleModel:sampleModel, imageFile:imageFile})
           .end(function(err, res){
             done();
           });
@@ -49,10 +50,11 @@ describe('sampleModel', function(){
       var sampleModel = {
         whatever: 'whatever'
       };
+      var imageFile = __dirname + '/../fixtures/test-copy.jpg';
       request(app)
       .post('/sampleModels/create')
       .set('cookie', cookie)
-      .send({sampleModel:sampleModel})
+      .send({sampleModel:sampleModel, imageFile:imageFile})
       .end(function(err, res){
         expect(res.status).to.equal(302);
         done();

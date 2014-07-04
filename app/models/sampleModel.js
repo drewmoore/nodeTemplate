@@ -3,6 +3,8 @@
 var SampleModel;
 var sampleModels = global.nss.db.collection('sampleModels');
 var Mongo = require('mongodb');
+var path = require('path');
+var fs = require('fs');
 
 module.exports = SampleModel;
 
@@ -34,7 +36,20 @@ SampleModel.prototype.insert = function(fn){
     }
   });
 };
-
+SampleModel.prototype.addImage = function(oldname, fn){
+  var self = this;
+  var extension = path.extname(oldname);
+  var sampleModelId = this._id.toString();
+  var absolutePath = __dirname + '/../static';
+  var sampleModelsPath = absolutePath + '/img/sampleModels';
+  var relativePath = '/img/sampleModels/' + sampleModelId + extension;
+  fs.mkdir(sampleModelsPath, function(){
+    fs.rename(oldname, absolutePath + relativePath, function(err){
+      self.image = relativePath;
+      fn(err);
+    });
+  });
+};
 SampleModel.findById = function(id, fn){
   var mongoId = new Mongo.ObjectID(id);
   sampleModels.findOne({_id:mongoId}, function(err, record){

@@ -19,6 +19,7 @@ exports.create = function(req, res){
     whatever: 'default setting'
   };
   var userIdString = req.session.userId.toString();
+  var imageFile = req.body.imageFile || '';
   User.findById(userIdString, function(userErr, user){
     if(typeof userErr === 'string'){
       res.render('sampleModels/create', {title:'Add a New Sample Model', err:userErr});
@@ -32,8 +33,10 @@ exports.create = function(req, res){
           var u1 = new User(user);
           u1._id = user._id;
           u1.addSampleModel(s1._id);
-          u1.update(function(err, userRecord){
-            res.redirect('sampleModels/show/' + s1._id.toString());
+          s1.addImage(imageFile, function(err){
+            u1.update(function(err, userRecord){
+              res.redirect('sampleModels/show/' + s1._id.toString());
+            });
           });
         }
       });
