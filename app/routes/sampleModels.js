@@ -19,8 +19,8 @@ exports.createPage = function(req, res){
 };
 
 exports.create = function(req, res){
-  var sampleModel = req.body.whatever || {
-    whatever: 'default setting'
+  var sampleModel =  {
+    whatever: req.body.whatever || 'default setting'
   };
   var userIdString = req.session.userId.toString();
   var imageFile = req.body.imageFile || req.files.imageFile.path;
@@ -57,12 +57,12 @@ exports.edit = function(req, res){
 };
 
 exports.update = function(req, res){
-  var s1 = new SampleModel(req.body.sampleModel);
+  var s1 = new SampleModel(req.body.sampleModel || req.body);
   var imageFile = req.body.imageFile || req.files.imageFile.path;
   s1._id = new Mongo.ObjectID(req.params.id);
   s1.addImage(imageFile, function(err){
     s1.update(function(record){
-      res.redirect('sampleModels/' + req.params.id.toString());
+      res.redirect('/sampleModels/' + req.params.id);
     });
   });
 };

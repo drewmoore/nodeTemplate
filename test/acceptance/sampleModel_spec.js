@@ -85,7 +85,7 @@ describe('sampleModel', function(){
         var sampleModelPathSplit = res.header.location.split('/');
         var sampleModelId = sampleModelPathSplit[sampleModelPathSplit.length - 1];
         request(app)
-        .put('/sampleModels/update/' + sampleModelId)
+        .post('/sampleModels/update/' + sampleModelId)
         .set('cookie', cookie)
         .send({sampleModel:sampleModel, imageFile:imageFile})
         .end(function(err, res){
