@@ -11,15 +11,19 @@ exports.index = function(req, res){
 };
 
 exports.createPage = function(req, res){
-  res.render('sampleModels/create', {title:'Add a New Sample Model'});
+  if(req.session.userId){
+    res.render('sampleModels/create', {title:'Add a New Sample Model'});
+  } else {
+    res.render('users/auth', {title:'Register/Login'});
+  }
 };
 
 exports.create = function(req, res){
-  var sampleModel = req.body.sampleModel || {
+  var sampleModel = req.body.whatever || {
     whatever: 'default setting'
   };
   var userIdString = req.session.userId.toString();
-  var imageFile = req.body.imageFile || '';
+  var imageFile = req.body.imageFile || req.files.imageFile.path;
   User.findById(userIdString, function(userErr, user){
     if(typeof userErr === 'string'){
       res.render('sampleModels/create', {title:'Add a New Sample Model', err:userErr});
@@ -35,7 +39,9 @@ exports.create = function(req, res){
           u1.addSampleModel(s1._id);
           s1.addImage(imageFile, function(err){
             u1.update(function(err, userRecord){
-              res.redirect('sampleModels/show/' + s1._id.toString());
+              s1.update(function(err, sampleModelRecord){
+                res.redirect('sampleModels/' + s1._id.toString());
+              });
             });
           });
         }
@@ -51,10 +57,13 @@ exports.edit = function(req, res){
 };
 
 exports.update = function(req, res){
-  var s1 = new SampleModel(req.body);
+  var s1 = new SampleModel(req.body.sampleModel);
+  var imageFile = req.body.imageFile || req.files.imageFile.path;
   s1._id = new Mongo.ObjectID(req.params.id);
-  s1.update(function(record){
-    res.redirect('sampleModels/' + req.params.id);
+  s1.addImage(imageFile, function(err){
+    s1.update(function(record){
+      res.redirect('sampleModels/' + req.params.id.toString());
+    });
   });
 };
 

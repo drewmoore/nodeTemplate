@@ -2,6 +2,8 @@
 
 process.env.DBNAME = 'nodeTemplate-test';
 var expect = require('chai').expect;
+var fs = require('fs');
+var exec = require('child_process').exec;
 var Mongo = require('mongodb');
 var SampleModel;
 var User;
@@ -17,8 +19,15 @@ describe('SampleModel', function(){
     });
   });
   beforeEach(function(done){
-    global.nss.db.dropDatabase(function(err, result){
-      done();
+    var testdir = __dirname + '/../../app/static/img/sampleModels';
+    var cmd = 'rm -rf ' + testdir;
+    exec(cmd, function(){
+      var origfile = __dirname + '/../fixtures/test.jpg';
+      var copyfile = __dirname + '/../fixtures/test-copy.jpg';
+      fs.createReadStream(origfile).pipe(fs.createWriteStream(copyfile));
+      global.nss.db.dropDatabase(function(err, result){
+        done();
+      });
     });
   });
   describe('new', function(){
