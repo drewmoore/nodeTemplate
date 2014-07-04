@@ -72,9 +72,11 @@ SampleModel.prototype.update = function(fn){
   });
 };
 
-SampleModel.prototype.remove = function(fn){
-  var self = this;
-  sampleModels.remove({_id:self._id}, function(){
-    fn();
+SampleModel.destroy = function(id, fn){
+  if((typeof id) === 'string'){
+    id = Mongo.ObjectID(id);
+  }
+  sampleModels.remove({_id:id}, function(err, count){
+    fn(err, count);
   });
 };

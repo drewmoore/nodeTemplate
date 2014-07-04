@@ -43,7 +43,7 @@ describe('SampleModel', function(){
       });
     });
   });
-  describe('insert', function(){
+  describe('#insert', function(){
     it('should add a new SampleModel record to the database', function(done){
       var u1 = new User({email:'test@nomail.com', name:'Test', password:'1234'});
       u1.register(function(err, body){
@@ -56,7 +56,7 @@ describe('SampleModel', function(){
       });
     });
   });
-  describe('addImage', function(){
+  describe('#addImage', function(){
     it('should add an image', function(done){
       var u1 = new User({email:'test@nomail.com', name:'Test', password:'1234'});
       u1.register(function(err, body){
@@ -123,6 +123,19 @@ describe('SampleModel', function(){
           var id = (s1._id).toString();
           SampleModel.findById(id, function(record){
             expect(record.whatever).to.deep.equal(s1.whatever);
+            done();
+          });
+        });
+      });
+    });
+  });
+  describe('destroy', function(){
+    it('should delete a SampleModel from the DB', function(done){
+      var s1 = new SampleModel({whatever: 'stuff'});
+      s1.insert(function(err, records){
+        SampleModel.destroy(s1._id, function(err, count){
+          SampleModel.findById(records[0]._id.toString(), function(record){
+            expect(record).to.deep.equal(null);
             done();
           });
         });

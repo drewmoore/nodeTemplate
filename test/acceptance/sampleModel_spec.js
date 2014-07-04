@@ -100,5 +100,25 @@ describe('sampleModel', function(){
       });
     });
   });
+  describe('delete sampleModel', function(){
+    it('should remove a sampleModel from the DB', function(done){
+      var sampleModel = {whatever: 'whatever'};
+      var imageFile = __dirname + '/../fixtures/test-copy.jpg';
+      request(app)
+      .post('/sampleModels/create')
+      .set('cookie', cookie)
+      .send({sampleModel:sampleModel, imageFile:imageFile})
+      .end(function(err, res){
+        var sampleModelPathSplit = res.header.location.split('/');
+        var sampleModelId = sampleModelPathSplit[sampleModelPathSplit.length - 1];
+        request(app)
+        .del('/sampleModels/' + sampleModelId)
+        .end(function(err, res){
+          expect(res.status).to.equal(302);
+          done();
+        });
+      });
+    });
+  });
 
 });

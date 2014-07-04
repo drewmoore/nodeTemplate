@@ -68,16 +68,17 @@ exports.update = function(req, res){
 };
 
 exports.remove = function(req, res){
-  SampleModel.findById(req.params.id, function(sampleModel){
-    var s1 = new SampleModel(sampleModel);
-    s1.remove(function(){
-      res.redirect('/sampleModels');
-    });
+  SampleModel.destroy(req.params.id, function(err, count){
+    res.redirect('/sampleModels');
   });
 };
 
 exports.show = function(req, res){
   SampleModel.findById(req.params.id, function(sampleModel){
-    res.render('sampleModels/show', {title:'Sample Model Show', sampleModel:sampleModel});
+    if(sampleModel){
+      res.render('sampleModels/show', {title:'Sample Model Show', sampleModel:sampleModel});
+    } else {
+      res.render('sampleModels/', {title:'Sample Models', err:'sampleModel not found'});
+    }
   });
 };
