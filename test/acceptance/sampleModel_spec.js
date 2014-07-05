@@ -112,10 +112,15 @@ describe('sampleModel', function(){
         var sampleModelPathSplit = res.header.location.split('/');
         var sampleModelId = sampleModelPathSplit[sampleModelPathSplit.length - 1];
         request(app)
-        .del('/sampleModels/' + sampleModelId)
+        .post('/sampleModels/delete/' + sampleModelId)
         .end(function(err, res){
           expect(res.status).to.equal(302);
-          done();
+          request(app)
+          .get('/sampleModels' + sampleModelId)
+          .end(function(err, res){
+            expect(res.status).to.equal(404);
+            done();
+          });
         });
       });
     });

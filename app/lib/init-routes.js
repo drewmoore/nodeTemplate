@@ -28,7 +28,7 @@ function load(app, fn){
   app.post('/login', d, users.login);
   app.post('/logout', d, users.logout);
   app.post('/sampleModels/update/:id', d, sampleModels.update);
-  app.delete('/sampleModels/:id', d, sampleModels.remove);
+  app.post('/sampleModels/delete/:id', d, sampleModels.remove);
   console.log('Routes Loaded');
   fn();
 }
