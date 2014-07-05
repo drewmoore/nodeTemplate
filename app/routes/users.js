@@ -4,7 +4,9 @@ var User = require('../models/user');
 var self = this;
 
 exports.auth = function(req, res){
-  res.render('users/auth', {title: 'Registration/Login'});
+  User.findById(req.session.userId, function(err, user){
+    res.render('users/auth', {title: 'Registration/Login', user:user});
+  });
 };
 
 exports.register = function(req, res){

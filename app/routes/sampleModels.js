@@ -6,13 +6,17 @@ var Mongo = require('mongodb');
 
 exports.index = function(req, res){
   SampleModel.index(function(sampleModels){
-    res.render('sampleModels/index', {title: 'All Sample Models', sampleModels:sampleModels});
+    User.findById(req.session.userId, function(err, user){
+      res.render('sampleModels/index', {title: 'All Sample Models', sampleModels:sampleModels, user:user});
+    });
   });
 };
 
 exports.createPage = function(req, res){
   if(req.session.userId){
-    res.render('sampleModels/create', {title:'Add a New Sample Model'});
+    User.findById(req.session.userId, function(err, user){
+      res.render('sampleModels/create', {title:'Add a New Sample Model', user:user});
+    });
   } else {
     res.render('users/auth', {title:'Register/Login'});
   }
@@ -26,13 +30,13 @@ exports.create = function(req, res){
   var imageFile = req.body.imageFile || req.files.imageFile.path;
   User.findById(userIdString, function(userErr, user){
     if(typeof userErr === 'string'){
-      res.render('sampleModels/create', {title:'Add a New Sample Model', err:userErr});
+      res.render('sampleModels/create', {title:'Add a New Sample Model', err:userErr, user:user});
     } else {
       var s1 = new SampleModel(sampleModel);
       s1.addUser(user._id);
       s1.insert(function(modelErr, records){
         if(typeof modelErr === 'string'){
-          res.render('sampleModels/create', {title:'Add a New Sample Model', err:modelErr});
+          res.render('sampleModels/create', {title:'Add a New Sample Model', err:modelErr, user:user});
         } else {
           var u1 = new User(user);
           u1._id = user._id;
@@ -52,7 +56,9 @@ exports.create = function(req, res){
 
 exports.edit = function(req, res){
   SampleModel.findById(req.params.id, function(sampleModel){
-    res.render('sampleModels/edit', {title:'Edit a Sample Model', sampleModel:sampleModel});
+    User.findById(req.session.userId, function(err, user){
+      res.render('sampleModels/edit', {title:'Edit a Sample Model', sampleModel:sampleModel, user:user});
+    });
   });
 };
 
@@ -74,11 +80,13 @@ exports.remove = function(req, res){
 };
 
 exports.show = function(req, res){
-  SampleModel.findById(req.params.id, function(sampleModel){
-    if(sampleModel){
-      res.render('sampleModels/show', {title:'Sample Model Show', sampleModel:sampleModel});
-    } else {
-      res.render('sampleModels/', {title:'Sample Models', err:'sampleModel not found'});
-    }
+  User.findById(req.session.userId, function(err, user){
+    SampleModel.findById(req.params.id, function(sampleModel){
+      if(sampleModel){
+        res.render('sampleModels/show', {title:'Sample Model Show', sampleModel:sampleModel, user:user});
+      } else {
+        res.render('sampleModels/', {title:'Sample Models', err:'sampleModel not found', user:user});
+      }
+    });
   });
 };

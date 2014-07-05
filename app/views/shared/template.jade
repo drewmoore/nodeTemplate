@@ -20,10 +20,15 @@ html(class='no-js', lang='en')
       section.top-bar-section
         ul.left
         ul.right
-          li: a(href="/sampleModels/create") New Sample Model
+          li: a(href="/sampleModels") All Sample Models
           li.divider
-          li: a(onclick="$('#logout-form').submit(); return false;") Logout
-            form#logout-form.hide(action='/logout', method='post')
+          if user
+            li: a(href="/sampleModels/create") New Sample Model
+            li.divider
+            li: a(onclick="$('#logout-form').submit(); return false;") Logout
+              form#logout-form.hide(action='/logout', method='post')
+          else
+            li: a(href="/auth") Login/Registration
 
     .row
       .small-12.columns
@@ -36,4 +41,3 @@ html(class='no-js', lang='en')
     script(src='/js/vendor/lodash.js')
     script(src='/js/vendor/moment.js')
     script(src='/js/source/main.js')
-
