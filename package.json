@@ -14,7 +14,7 @@
     "coveralls" : "./node_modules/mocha/bin/mocha test --recursive -r blanket -R mocha-lcov-reporter | coveralls"
   },
   "dependencies": {
-    "express":         "*",
+    "express":         "3.5.3",
     "lodash":          "*",
     "moment":          "*",
     "mongodb":         "*",
@@ -44,4 +44,3 @@
     }
   }
 }
-
