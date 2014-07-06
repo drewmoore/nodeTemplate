@@ -17,7 +17,7 @@ app.set('view engine', 'jade');
 /* --- pipeline begins */
 app.use(initMongo.connect);
 app.use(initRoutes);
-app.use(express.logger(':remote-addr -> :method :url [:status]'));
+//app.use(express.logger(':remote-addr -> :method :url [:status]'));
 //app.use(express.favicon());
 app.use(express.static(__dirname + '/static'));
 app.use('/less', less(__dirname + '/less'));
@@ -39,4 +39,3 @@ server.listen(port, function(){
 });
 
 module.exports = app;
-
